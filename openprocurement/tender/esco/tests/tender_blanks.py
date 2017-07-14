@@ -76,6 +76,58 @@ def tender_min_value(self):
     self.assertEqual(response.json['data']['minValue']['currency'], 'UAH')
 
 
+def tender_items_without_deliveryDate_quantity(self):
+
+    # create role
+
+    response = self.app.post_json('/tenders', {"data": self.initial_data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    tender = response.json['data']
+    self.tender_id = response.json['data']['id']
+    owner_token = response.json['access']['token']
+
+    for item in tender['items']:
+        self.assertNotIn('deliveryDate', item)
+        self.assertNotIn('quantity', item)
+
+    # edit_active.tendering role
+
+    response = self.app.patch_json('/tenders/{}?acc_token={}'.format(
+        tender['id'], owner_token), {'data': {'items': [{'quantity': 5}]}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+
+    for item in response.json['data']['items']:
+        self.assertNotIn('deliveryDate', item)
+        self.assertNotIn('quantity', item)
+
+    # edit_draft role
+
+    tender_data = deepcopy(self.initial_data)
+    tender_data['status'] = 'draft'
+
+    response = self.app.post_json('/tenders', {"data": tender_data})
+    self.assertEqual(response.status, '201 Created')
+    self.assertEqual(response.content_type, 'application/json')
+    tender = response.json['data']
+    self.tender_id = response.json['data']['id']
+    owner_token = response.json['access']['token']
+
+    for item in response.json['data']['items']:
+        self.assertNotIn('deliveryDate', item)
+        self.assertNotIn('quantity', item)
+
+    response = self.app.patch_json('/tenders/{}?acc_token={}'.format(
+        tender['id'], owner_token), {'data': {'status': 'active.tendering', 'items': [{'quantity': 5}]}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+
+    for item in response.json['data']['items']:
+        self.assertNotIn('deliveryDate', item)
+        self.assertNotIn('quantity', item)
+
+
 # TestTenderEU
 
 

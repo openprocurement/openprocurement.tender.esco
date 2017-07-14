@@ -177,7 +177,12 @@ class LotValue(BaseLotValue):
 class Item(BaseItem):
     """A good, service, or work to be contracted."""
     class Options:
-        roles = {"default": blacklist("__parent__", "quantity", "deliveryDate")}
+        roles = {
+            'edit': blacklist("quantity", "deliveryDate"),
+            'edit_draft': blacklist("quantity", "deliveryDate"),
+            'edit_active.tendering': blacklist("quantity", "deliveryDate"),
+            "create": blacklist("quantity", "deliveryDate")
+        }
     deliveryAddress = ModelType(Address, required=False)
     deliveryDate = ModelType(PeriodEndRequired, required=False)
     quantity = IntType(required=False)
