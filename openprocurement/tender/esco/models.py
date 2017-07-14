@@ -174,16 +174,31 @@ class LotValue(BaseLotValue):
                 raise ValidationError(u"valueAddedTaxIncluded of bid should be identical to valueAddedTaxIncluded of minValue of lot")
 
 
+class Item(BaseItem):
+    """A good, service, or work to be contracted."""
+    deliveryAddress = ModelType(Address, required=False)
+    deliveryDate = ModelType(PeriodEndRequired, required=False)
+    quantity = IntType(required=False)
+
+
+    class Options:
+        roles = {
+            "default": blacklist("__parent__", "quantity", "deliveryDate")
+        }
+
+
 class Contract(BaseEUContract):
     """ESCO EU contract model"""
 
     value = ModelType(ESCOValue)
+    items = ListType(ModelType(Item))
 
 
 class Award(BaseEUAward):
     """ESCO EU award model"""
 
     value = ModelType(ESCOValue)
+    items = ListType(ModelType(Item))
 
 
 class Bid(BaseEUBid):
@@ -210,18 +225,6 @@ class Bid(BaseEUBid):
                 if tender.get('minValue').valueAddedTaxIncluded != value.valueAddedTaxIncluded:
                     raise ValidationError(u"valueAddedTaxIncluded of bid should be identical to valueAddedTaxIncluded of minValue of tender")
 
-
-class Item(BaseItem):
-    """A good, service, or work to be contracted."""
-    deliveryAddress = ModelType(Address, required=False)
-    deliveryDate = ModelType(PeriodEndRequired, required=False)
-    quantity = IntType(required=False)
-
-
-    class Options:
-        roles = {
-            "default": blacklist("__parent__", "quantity", "deliveryDate")
-        }
 
 @implementer(IESCOTender)
 class Tender(BaseTender):
