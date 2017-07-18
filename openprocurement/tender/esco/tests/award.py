@@ -37,6 +37,7 @@ from openprocurement.tender.esco.tests.base import (
     test_lots,
     NBU_DISCOUNT_RATE
 )
+from openprocurement.tender.esco.tests.award_blanks import award_items_without_quantity_deliveryDate
 
 award_amount = calculate_npv(NBU_DISCOUNT_RATE,
                              test_bids[0]['value']['annualCostsReduction'],
@@ -64,6 +65,7 @@ class TenderAwardResourceTest(BaseESCOEUContentWebTest,
         self.bid_token = self.initial_bids_tokens[self.initial_bids[0]['id']]
         self.app.authorization = ('Basic', ('broker', ''))
 
+    test_award_items_without_quantity_deliveryDate = snitch(award_items_without_quantity_deliveryDate)
 
 class TenderLotAwardResourceTest(BaseESCOEUContentWebTest,
                                  TenderLotAwardResourceTestMixin):
