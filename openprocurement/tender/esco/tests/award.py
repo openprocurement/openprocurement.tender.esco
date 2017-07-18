@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 import unittest
+from copy import deepcopy
 
 from openprocurement.api.tests.base import snitch
-
+from openprocurement.tender.esco.adapters import TenderESCOConfigurator
 from openprocurement.tender.belowthreshold.tests.base import test_organization
 from openprocurement.tender.belowthreshold.tests.award import (
+    TenderLotAwardCheckResourceTestMixin,
     TenderAwardComplaintResourceTestMixin,
     TenderAwardDocumentResourceTestMixin,
     TenderAwardComplaintDocumentResourceTestMixin,
@@ -39,6 +41,7 @@ from openprocurement.tender.esco.tests.base import (
 )
 from openprocurement.tender.esco.tests.award_blanks import award_items_without_quantity_deliveryDate
 
+
 award_amount = calculate_npv(NBU_DISCOUNT_RATE,
                              test_bids[0]['value']['annualCostsReduction'],
                              test_bids[0]['value']['yearlyPayments'],
@@ -66,6 +69,33 @@ class TenderAwardResourceTest(BaseESCOEUContentWebTest,
         self.app.authorization = ('Basic', ('broker', ''))
 
     test_award_items_without_quantity_deliveryDate = snitch(award_items_without_quantity_deliveryDate)
+
+class TenderLotAwardCheckResourceTest(BaseESCOEUContentWebTest,
+                              TenderLotAwardCheckResourceTestMixin):
+    initial_status = 'active.tendering'
+    initial_bids = deepcopy(test_bids)
+    initial_bids.append(deepcopy(test_bids[0]))
+    initial_bids[1]['tenderers'][0]['name'] = u'Не зовсім Державне управління справами'
+    initial_bids[1]['tenderers'][0]['identifier']['id'] = u'88837256'
+    initial_bids[2]['tenderers'][0]['name'] = u'Точно не Державне управління справами'
+    initial_bids[2]['tenderers'][0]['identifier']['id'] = u'44437256'
+    reverse = TenderESCOConfigurator.reverse_awarding_criteria
+
+    initial_lots = test_lots
+    initial_auth = ('Basic', ('broker', ''))
+
+    def setUp(self):
+        super(TenderLotAwardCheckResourceTest, self).setUp()
+        # switch to active.pre-qualification
+
+        self.prepare_award()
+
+        # Get award
+        response = self.app.get('/tenders/{}/awards'.format(self.tender_id))
+        self.award_id = response.json['data'][0]['id']
+        self.bid_token = self.initial_bids_tokens[self.initial_bids[0]['id']]
+        self.app.authorization = ('Basic', ('broker', ''))
+
 
 class TenderLotAwardResourceTest(BaseESCOEUContentWebTest,
                                  TenderLotAwardResourceTestMixin):
