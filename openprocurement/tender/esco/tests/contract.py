@@ -29,7 +29,7 @@ from openprocurement.tender.openeu.tests.contract_blanks import (
 from openprocurement.tender.esco.tests.contract_blanks import (
     # TenderContractResourceTest
     patch_tender_contract,
-    items_without_quantity_deliveryDate
+    contract_items_without_quantity_deliveryDate
 )
 
 
@@ -53,7 +53,7 @@ class TenderContractResourceTest(BaseESCOEUContentWebTest, TenderContractResourc
     test_create_tender_contract = snitch(create_tender_contract)
     test_patch_tender_contract_datesigned = snitch(patch_tender_contract_datesigned)
     test_patch_tender_contract = snitch(patch_tender_contract)
-    test_items_without_quantity_deliveryDate = snitch(items_without_quantity_deliveryDate)
+    test_contract_items_without_quantity_deliveryDate = snitch(contract_items_without_quantity_deliveryDate)
 
 
 class TenderContractDocumentResourceTest(BaseESCOEUContentWebTest, TenderContractDocumentResourceTestMixin):
