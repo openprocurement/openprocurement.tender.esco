@@ -18,7 +18,7 @@ def award_items_without_quantity_deliveryDate(self):
                                            "description": u"футляри до державних нагород",
                                            "description_en": u"Cases for state awards",
                                            "classification": {
-                                               "scheme": u"CPV",
+                                               "scheme": u"ДК021",
                                                "id": u"44617100-9",
                                                "description": u"Cartons"
                                            },
@@ -86,7 +86,7 @@ def award_items_without_quantity_deliveryDate(self):
                                "description": u"футляри до державних нагород",
                                "description_en": u"Cases for state awards",
                                "classification": {
-                                   "scheme": u"CPV",
+                                   "scheme": u"ДК021",
                                    "id": u"44617100-9",
                                    "description": u"Cartons"
                                },
