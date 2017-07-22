@@ -34,7 +34,7 @@ from openprocurement.tender.esco.tests.tender_blanks import (
     simple_add_tender,
     tender_value,
     tender_min_value,
-    tender_items_without_deliveryDate_quantity,
+    items_without_deliveryDate_quantity,
     #TestTenderEU
     create_tender_invalid,
     tender_with_nbu_discount_rate,
@@ -46,11 +46,12 @@ from openprocurement.tender.esco.tests.tender_blanks import (
 class TenderESCOEUTest(BaseESCOWebTest):
     initial_auth = ('Basic', ('broker', ''))
     initial_data = test_tender_data
+    test_bids_data = test_bids
 
     test_simple_add_tender = snitch(simple_add_tender)
     test_tender_value = snitch(tender_value)
     test_tender_min_value = snitch(tender_min_value)
-    test_tender_items_without_deliveryDate_quantity = snitch(tender_items_without_deliveryDate_quantity)
+    test_items_without_deliveryDate_quantity = snitch(items_without_deliveryDate_quantity)
 
 
 class TestTenderEU(BaseESCOEUContentWebTest, TenderResourceTestMixin, TenderUAResourceTestMixin):
