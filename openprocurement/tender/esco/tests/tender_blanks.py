@@ -82,53 +82,39 @@ def tender_min_value(self):
 
 def items_without_deliveryDate_quantity(self):
 
+    self.assertEqual(len(self.initial_data['items']), 1)
+    for item in self.initial_data['items']:
+        self.assertIn('deliveryDate', item)
+        self.assertIn('quantity', item)
+
     # create role
-
-    response = self.app.post_json('/tenders', {"data": self.initial_data})
-    self.assertEqual(response.status, '201 Created')
-    self.assertEqual(response.content_type, 'application/json')
-    tender = response.json['data']
-    self.tender_id = response.json['data']['id']
-
-    for item in tender['items']:
-        self.assertNotIn('deliveryDate', item)
-        self.assertNotIn('quantity', item)
-
-    # edit_draft role
-
     tender_data = deepcopy(self.initial_data)
     tender_data['status'] = 'draft'
 
     response = self.app.post_json('/tenders', {"data": tender_data})
     self.assertEqual(response.status, '201 Created')
     self.assertEqual(response.content_type, 'application/json')
-    tender = response.json['data']
-    self.tender_id = response.json['data']['id']
-    owner_token = response.json['access']['token']
-
-    for item in response.json['data']['items']:
-        self.assertNotIn('deliveryDate', item)
-        self.assertNotIn('quantity', item)
-
-    response = self.app.patch_json('/tenders/{}?acc_token={}'.format(
-        tender['id'], owner_token), {'data': {'status': 'active.tendering', 'items': [{'quantity': 5}]}})
-    self.assertEqual(response.status, '200 OK')
-    self.assertEqual(response.content_type, 'application/json')
-
-    for item in response.json['data']['items']:
-        self.assertNotIn('deliveryDate', item)
-        self.assertNotIn('quantity', item)
-
-    # award preparation
-    # create tender
-
-    response = self.app.post_json('/tenders', {"data": self.initial_data})
-    self.assertEqual(response.status, '201 Created')
-    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['status'], 'draft')
     self.tender_id = response.json['data']['id']
     self.tender_token = response.json['access']['token']
 
+    for item in response.json['data']['items']:
+        self.assertNotIn('deliveryDate', item)
+        self.assertNotIn('quantity', item)
+
+    # edit_draft role
+    response = self.app.patch_json('/tenders/{}?acc_token={}'.format(
+        self.tender_id, self.tender_token), {'data': {'items': [{'quantity': 5}]}}, status=403)
+    self.assertEqual(response.status, '403 Forbidden')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['errors'][0]["description"], "Can't update tender in current (draft) status")
+
     # edit_active.tendering role
+    response = self.app.patch_json('/tenders/{}?acc_token={}'.format(
+        self.tender_id, self.tender_token), {'data': {'status': 'active.tendering'}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['data']['status'], 'active.tendering')
 
     response = self.app.patch_json('/tenders/{}?acc_token={}'.format(
         self.tender_id, self.tender_token), {'data': {'items': [{'quantity': 5}]}})
@@ -139,23 +125,24 @@ def items_without_deliveryDate_quantity(self):
         self.assertNotIn('deliveryDate', item)
         self.assertNotIn('quantity', item)
 
-    # post bids
+    # award preparation
 
+    # post bids
     for bid_data in self.test_bids_data:
         response = self.app.post_json('/tenders/{}/bids'.format(self.tender_id), {'data': bid_data})
         self.assertEqual(response.status, '201 Created')
         self.assertEqual(response.content_type, 'application/json')
 
     # switch to active.pre-qualification
-    self.set_status('active.pre-qualification', {"id": self.tender_id, 'status': 'active.tendering'})
+    self.set_status('active.pre-qualification', {'status': 'active.tendering'})
     self.app.authorization = ('Basic', ('chronograph', ''))
     response = self.app.patch_json('/tenders/{}'.format(
         self.tender_id), {"data": {"id": self.tender_id}})
     self.assertEqual(response.json['data']['status'], 'active.pre-qualification')
 
     # qualify bids
-    response = self.app.get('/tenders/{}/qualifications'.format(self.tender_id))
     self.app.authorization = ('Basic', ('broker', ''))
+    response = self.app.get('/tenders/{}/qualifications'.format(self.tender_id))
     for qualification in response.json['data']:
         response = self.app.patch_json('/tenders/{}/qualifications/{}?acc_token={}'.format(
             self.tender_id, qualification['id'], self.tender_token),
@@ -168,7 +155,7 @@ def items_without_deliveryDate_quantity(self):
     self.assertEqual(response.json['data']['status'], 'active.pre-qualification.stand-still')
 
     # switch to active.auction
-    self.set_status('active.auction', {"id": self.tender_id, 'status': 'active.pre-qualification.stand-still'})
+    self.set_status('active.auction', {'status': 'active.pre-qualification.stand-still'})
     self.app.authorization = ('Basic', ('chronograph', ''))
     response = self.app.patch_json('/tenders/{}'.format(
         self.tender_id), {"data": {"id": self.tender_id}})
@@ -190,7 +177,6 @@ def items_without_deliveryDate_quantity(self):
     self.app.authorization = ('Basic', ('broker', ''))
 
     # qualify award
-
     response = self.app.patch_json(
         '/tenders/{}/awards/{}?acc_token={}'.format(self.tender_id, self.award_id, self.tender_token),
         {"data": {'status': 'active', "qualified": True, "eligible": True,
@@ -243,10 +229,14 @@ def items_without_deliveryDate_quantity(self):
                                                      "endDate": (get_now() + timedelta(days=15)).isoformat()
                                                  }}]}})
     self.assertEqual(response.status, '200 OK')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.body, 'null')
 
     response = self.app.get('/tenders/{}/contracts/{}'.format(self.tender_id, contract['id']))
+    self.assertEqual(response.status, '200 OK')
     self.assertEqual(response.content_type, 'application/json')
     contract = response.json['data']
+    self.assertEqual(len(contract['items']), 1)
 
     for item in contract['items']:
         self.assertNotIn('deliveryDate', item)
