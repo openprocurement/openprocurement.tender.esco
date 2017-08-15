@@ -1,40 +1,40 @@
 from openprocurement.tender.esco.utils import calculate_npv
+from openprocurement.tender.esco.npv_calculation import (
+    calculate_contract_duration,
+)
+from openprocurement.tender.esco.constants import DAYS_PER_YEAR
 
 
 nbu_rate = 0.22
 
 
-def npv_case1(self):
-    annualCostsReduction = 751.5
-    yearlyPayments = 0.9
-    contractDuration = 10
-    npv_val = calculate_npv(nbu_rate, annualCostsReduction,
-                            yearlyPayments, contractDuration)
-    self.assertEqual(npv_val, 698.444)
+def contract_duration(self):
+    # Minimal contract duration
+    years = 0
+    days = 1
+    self.assertEqual(
+        calculate_contract_duration(years, days),
+        years * DAYS_PER_YEAR + days,
+    )
 
+    years = 0
+    days = 364
+    self.assertEqual(
+        calculate_contract_duration(years, days),
+        years * DAYS_PER_YEAR + days,
+    )
 
-def npv_case2(self):
-    annualCostsReduction = 300.6
-    yearlyPayments = 0.9
-    contractDuration = 6
-    npv_val = calculate_npv(nbu_rate, annualCostsReduction,
-                            yearlyPayments, contractDuration)
-    self.assertEqual(npv_val, 483.978)
+    years = 5
+    days = 275
+    self.assertEqual(
+        calculate_contract_duration(years, days),
+        years * DAYS_PER_YEAR + days,
+    )
 
-
-def npv_case3(self):
-    annualCostsReduction = 225.45
-    yearlyPayments = 0.9
-    contractDuration = 4
-    npv_val = calculate_npv(nbu_rate, annualCostsReduction,
-                            yearlyPayments, contractDuration)
-    self.assertEqual(npv_val, 499.595)
-
-
-def npv_case4(self):
-    annualCostsReduction = 75.15
-    yearlyPayments = 0.9
-    contractDuration = 2
-    npv_val = calculate_npv(nbu_rate, annualCostsReduction,
-                            yearlyPayments, contractDuration)
-    self.assertEqual(npv_val, 234.309)
+    # Max contract duration
+    years = 15
+    days = 0
+    self.assertEqual(
+        calculate_contract_duration(years, days),
+        years * DAYS_PER_YEAR + days,
+    )
