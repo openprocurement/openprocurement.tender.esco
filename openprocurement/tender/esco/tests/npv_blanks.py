@@ -50,6 +50,18 @@ def days_with_cost_reduction(self):
         calculate_days_with_cost_reduction(DAYS_PER_YEAR, announcement_date),
         [135, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
     )
+    
+    announcement_date = datetime.date(2020, 1, 20)
+    self.assertEqual(
+        calculate_days_with_cost_reduction(DAYS_PER_YEAR, announcement_date),
+        [347, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
+    )
+    
+    announcement_date = datetime.date(2019, 1, 20)
+    self.assertEqual(
+        calculate_days_with_cost_reduction(DAYS_PER_YEAR, announcement_date),
+        [346, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
+    )
 
 
 def days_for_discount_rate(self):
