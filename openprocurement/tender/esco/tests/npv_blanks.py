@@ -6,7 +6,7 @@ from openprocurement.tender.esco.npv_calculation import (
     calculate_days_with_cost_reduction,
     calculate_days_for_discount_rate
 )
-from openprocurement.tender.esco.constants import DAYS_PER_YEAR
+from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 
 nbu_rate = 0.22
 
@@ -53,11 +53,20 @@ def days_with_cost_reduction(self):
 
 
 def days_for_discount_rate(self):
-    days_per_year = 365
     announcement_date = datetime.date(2017, 8, 18)
-    npv_calculation_declaration = 20
-
-    days = calculate_days_for_discount_rate(days_per_year, announcement_date)
-    expected_days = [135] + [365] * 19 + [230]
+    days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
+    # (NPV_CALCULATION_DURATION - 1) is a number of full years
+    expected_days = [135] + [365] * (NPV_CALCULATION_DURATION - 1) + [230]
     self.assertEqual(days, expected_days)
+
+    anouncement_date = datetime.date(2020, 1, 20)
+    days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
+    expected_days = [347] + [365] * (NPV_CALCULATION_DURATION - 1) + [19]
+    self.assertEqual(days, expected_dayes)
+
+    anouncement_date = datetime.date(2019, 1, 20)
+    days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
+    expected_days = [346] + [365] * (NPV_CALCULATION_DURATION - 1) + [19]
+    self.assertEqual(days, expected_dayes)
+
 

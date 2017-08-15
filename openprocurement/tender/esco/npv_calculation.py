@@ -1,5 +1,7 @@
 import datetime
-from constants import DAYS_PER_YEAR, ANNOUNCEMENT_DATE, 
+from constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
+
+announcement_date = datetime.date(2017, 8, 18)
 
 def calculate_contract_duration(
         contract_duration_years,
@@ -12,18 +14,15 @@ def calculate_contract_duration(
 
 def calculate_days_with_cost_reduction(
         days_per_year=DAYS_PER_YEAR,
-        announcement_date=ANNOUNCEMENT_DATE):
-    
+        announcement_date=announcement_date):
     first_year_days = (datetime.date(announcement_date.year, 12, 31) - announcement_date).days
-
     days = [first_year_days] + [days_per_year] * NPV_CALCULATION_DURATION
     return days
 
 
 def calculate_days_for_discount_rate(
         days_per_year=DAYS_PER_YEAR,
-        announcement_date=ANNOUNCEMENT_DATE):
+        announcement_date=announcement_date):
     days = calculate_days_with_cost_reduction(days_per_year, announcement_date)[:-1]
     days.append(days_per_year - days[0])
-
     return days
