@@ -80,5 +80,3 @@ def days_for_discount_rate(self):
     days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
     expected_days = [346] + [365] * (NPV_CALCULATION_DURATION - 1) + [19]
     self.assertEqual(days, expected_dayes)
-
-
