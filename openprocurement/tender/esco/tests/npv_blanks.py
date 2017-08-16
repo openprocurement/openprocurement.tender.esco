@@ -4,6 +4,7 @@ from openprocurement.tender.esco.npv_calculation import (
     calculate_contract_duration,
     calculate_discount_rate,
     calculate_discount_rates,
+    calculate_payment,
 )
 
 
@@ -102,3 +103,59 @@ def discount_rates(self):
     self.assertEqual(len(days), len(calculated_rates))
     self.assertEqual(calculated_rates[0], predefined_rate1)
     self.assertEqual(calculated_rates[-1], predefined_rate2)
+
+
+def client_payment(self):
+
+    # Predefined values
+    yearly_payments_percentage = 70.0
+    client_cost_reduction = 92.47
+    days_with_payments = 135
+    days_for_discount_rate = 135
+    payment_predefined = 64.73
+    prec = 2
+
+    payment = calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+
+    self.assertEqual(round(payment, prec), round(payment_predefined, prec))
+    self.assertEqual(
+        round(yearly_payments_percentage * client_cost_reduction / 100, prec),
+        round(payment_predefined, prec),
+    )
+
+    # No days for payments at all
+    days_with_payments = 0
+    payment = calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertEqual(payment, 0)
+
+    # If there is more days for payments than payment must be greater
+    last_payment = payment
+    days_with_payments += 1
+    payment = calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertGreater(payment, last_payment)
+
+    # If there is less days for payments than payment must be smaller
+    last_payment = payment
+    days_with_payments -= 10
+    payment = calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertLess(payment, last_payment)
