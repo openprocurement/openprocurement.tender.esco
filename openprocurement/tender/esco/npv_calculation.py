@@ -65,10 +65,10 @@ def calculate_payment(
 
 
 def calculate_payments(
-       yearly_payments_percentage,
-       client_cost_reductions,
-       days_with_payments,
-       days_for_discount_rate):
+        yearly_payments_percentage,
+        client_cost_reductions,
+        days_with_payments,
+        days_for_discount_rate):
     '''Calculates client payments to a participant'''
 
     lists = zip(
