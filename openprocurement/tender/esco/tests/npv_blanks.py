@@ -1,40 +1,26 @@
 from openprocurement.tender.esco.utils import calculate_npv
 
+from openprocurement.tender.esco.npv_calculation import (
+    calculate_discount_coef,
+)
 
-nbu_rate = 0.22
+def discount_coef(self):
+    discount_rate = [4.623] + [12.500] * 19 + [7.877]
+    self.assertEqual(
+        calculate_discount_coef(discount_rate),
+        [0.956, 0.85, 0.756, 0.672, 0.597, 0.531, 0.472, 0.42, 0.373, 0.332, 0.295,
+         0.262, 0.233, 0.207, 0.184, 0.164, 0.146, 0.13, 0.116, 0.103, 0.095]
+    )
 
-
-def npv_case1(self):
-    annualCostsReduction = 751.5
-    yearlyPayments = 0.9
-    contractDuration = 10
-    npv_val = calculate_npv(nbu_rate, annualCostsReduction,
-                            yearlyPayments, contractDuration)
-    self.assertEqual(npv_val, 698.444)
-
-
-def npv_case2(self):
-    annualCostsReduction = 300.6
-    yearlyPayments = 0.9
-    contractDuration = 6
-    npv_val = calculate_npv(nbu_rate, annualCostsReduction,
-                            yearlyPayments, contractDuration)
-    self.assertEqual(npv_val, 483.978)
-
-
-def npv_case3(self):
-    annualCostsReduction = 225.45
-    yearlyPayments = 0.9
-    contractDuration = 4
-    npv_val = calculate_npv(nbu_rate, annualCostsReduction,
-                            yearlyPayments, contractDuration)
-    self.assertEqual(npv_val, 499.595)
-
-
-def npv_case4(self):
-    annualCostsReduction = 75.15
-    yearlyPayments = 0.9
-    contractDuration = 2
-    npv_val = calculate_npv(nbu_rate, annualCostsReduction,
-                            yearlyPayments, contractDuration)
-    self.assertEqual(npv_val, 234.309)
+    discount_rate = [0]*21
+    self.assertEqual(
+        calculate_discount_coef(discount_rate),
+        [1.0]*21
+    )
+    
+    discount_rate = [12.500] * 21
+    self.assertEqual(
+        calculate_discount_coef(discount_rate),
+        [0.889, 0.79, 0.702, 0.624, 0.555, 0.493, 0.438, 0.389, 0.346, 0.308,
+         0.274, 0.244, 0.217, 0.193, 0.172, 0.153, 0.136, 0.121, 0.108, 0.096, 0.085]
+    )
