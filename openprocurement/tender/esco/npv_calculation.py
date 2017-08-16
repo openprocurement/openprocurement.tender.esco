@@ -67,3 +67,7 @@ def calculate_days_with_payments(
     if len(days) < NPV_CALCULATION_DURATION + 1:
         days += [0] * (NPV_CALCULATION_DURATION + 1 - len(days))
     return days
+
+
+def calculate_income(client_cost_reductions, client_payments):
+	return map(lambda x, y: x - y, client_cost_reductions, client_payments)

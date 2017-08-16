@@ -7,8 +7,10 @@ from openprocurement.tender.esco.npv_calculation import (
     calculate_days_with_cost_reduction,
     calculate_days_for_discount_rate,
     calculate_days_with_payments,
+    calculate_income,
 )
 import datetime
+from fractions import Fraction
 
 nbu_rate = 0.22
 
@@ -151,3 +153,13 @@ def days_with_payments(self):
     days = calculate_days_with_payments(3, 0)
     expected_days = [135, 365, 365, 230] + [0] * 17
     self.assertEqual(days, expected_days)
+
+
+def income(self):
+    client_cost_reductions = [Fraction("92.47")] + [Fraction("250.0")] * 20
+    client_payments = [Fraction("64.73"), Fraction("175.0"), Fraction("175.0"), Fraction("110.27")] +\
+    [Fraction("0.0")] * 17
+    client_income = calculate_income(client_cost_reductions, client_payments)
+    expected_client_income = [Fraction("27.74"), Fraction("75.0"), Fraction("75.0"), Fraction("139.73")] +\
+    [Fraction("250.0")] * 17
+    self.assertEqual(client_income, expected_client_income)
