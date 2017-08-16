@@ -1,11 +1,14 @@
 from openprocurement.tender.esco.utils import calculate_npv
-from openprocurement.tender.esco.constants import DAYS_PER_YEAR
+from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 from openprocurement.tender.esco.npv_calculation import (
     calculate_contract_duration,
     calculate_discount_rate,
     calculate_discount_rates,
+    calculate_days_with_cost_reduction,
+    calculate_days_for_discount_rate,
+    calculate_days_with_payments,
 )
-
+import datetime
 
 nbu_rate = 0.22
 
@@ -54,13 +57,13 @@ def days_with_cost_reduction(self):
     announcement_date = datetime.date(2020, 1, 20)
     self.assertEqual(
         calculate_days_with_cost_reduction(DAYS_PER_YEAR, announcement_date),
-        [347, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
+        [346, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
     )
     
     announcement_date = datetime.date(2019, 1, 20)
     self.assertEqual(
         calculate_days_with_cost_reduction(DAYS_PER_YEAR, announcement_date),
-        [346, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
+        [345, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
     )
 
 
@@ -71,15 +74,15 @@ def days_for_discount_rate(self):
     expected_days = [135] + [365] * (NPV_CALCULATION_DURATION - 1) + [230]
     self.assertEqual(days, expected_days)
 
-    anouncement_date = datetime.date(2020, 1, 20)
-    days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
-    expected_days = [347] + [365] * (NPV_CALCULATION_DURATION - 1) + [19]
-    self.assertEqual(days, expected_dayes)
-
-    anouncement_date = datetime.date(2019, 1, 20)
+    announcement_date = datetime.date(2020, 1, 20)
     days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
     expected_days = [346] + [365] * (NPV_CALCULATION_DURATION - 1) + [19]
-    self.assertEqual(days, expected_dayes)
+    self.assertEqual(days, expected_days)
+
+    announcement_date = datetime.date(2019, 1, 20)
+    days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
+    expected_days = [345] + [365] * (NPV_CALCULATION_DURATION - 1) + [20]
+    self.assertEqual(days, expected_days)
 
 
 def discount_rate(self):
@@ -142,3 +145,9 @@ def discount_rates(self):
     self.assertEqual(len(days), len(calculated_rates))
     self.assertEqual(calculated_rates[0], predefined_rate1)
     self.assertEqual(calculated_rates[-1], predefined_rate2)
+
+
+def days_with_payments(self):
+    days = calculate_days_with_payments(3, 0)
+    expected_days = [135, 365, 365, 230] + [0] * 17
+    self.assertEqual(days, expected_days)
