@@ -24,4 +24,4 @@ def suite():
 
 
 if __name__ == '__main__':
-	nittest.main(defaultTest='suite')
+    unittest.main(defaultTest='suite')
