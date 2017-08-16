@@ -1,5 +1,6 @@
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 from fractions import Fraction
+import datetime
 
 
 def calculate_contract_duration(
@@ -51,4 +52,18 @@ def calculate_days_for_discount_rate(
         announcement_date=ANNOUNCEMENT_DATE):
     days = calculate_days_with_cost_reduction(days_per_year, announcement_date)[:-1]
     days.append(days_per_year - days[0])
+    return days
+
+
+def calculate_days_with_payments(
+        contract_duration_years,
+        contract_duration_days,
+        announcement_date=ANNOUNCEMENT_DATE,
+        days_per_year=DAYS_PER_YEAR):
+    contract_duration = calculate_contract_duration(contract_duration_years, contract_duration_days, days_per_year)
+    days = [min(contract_duration, calculate_days_with_cost_reduction(days_per_year, announcement_date)[0])]
+    contract_duration -= days[0]
+    days += [days_per_year] * (contract_duration // days_per_year) + [contract_duration % days_per_year]
+    if len(days) < NPV_CALCULATION_DURATION + 1:
+        days += [0] * (NPV_CALCULATION_DURATION + 1 - len(days))
     return days
