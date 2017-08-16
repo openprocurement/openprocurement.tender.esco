@@ -5,6 +5,7 @@ from openprocurement.tender.esco.npv_calculation import (
     calculate_discount_rate,
     calculate_discount_rates,
     calculate_payment,
+    calculate_payments,
 )
 
 
@@ -159,3 +160,61 @@ def client_payment(self):
         days_for_discount_rate,
     )
     self.assertLess(payment, last_payment)
+
+
+def client_payments(self):
+
+    periods = 21
+
+    # Predefined values
+    yearly_payments_percentage = 70.0
+    client_cost_reductions = [92.47] + [250.00] * 20
+    days_with_payments = [135, 365, 365, 230] + [0] * (periods - 4)
+    days_for_discount_rate = [135, 365, 365, 365] + [0] * (periods - 4)
+    payments_predefined = [64.73, 175.00, 175.00, 110.27] + [0] * (periods - 4)
+    payments_sum = 525.00
+    prec = 2
+
+    payments = calculate_payments(
+        yearly_payments_percentage,
+        client_cost_reductions,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertEqual(len(payments), len(client_cost_reductions))
+    for i, _ in enumerate(payments):
+        self.assertEqual(
+            round(payments[i], prec),
+            round(payments_predefined[i], prec)
+        )
+
+    self.assertEqual(round(sum(payments), prec), round(payments_sum, prec))
+
+    # No days for payments at all
+    days_with_payments = [0] * periods
+    days_for_discount_rate = [365] * periods
+    payments = calculate_payments(
+        yearly_payments_percentage,
+        client_cost_reductions,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertEqual(len(payments), len(client_cost_reductions))
+    for payment in payments:
+        self.assertEqual(payment, 0)
+
+    # If there is more days for payments than payment must be greater
+    # days_with_payments = [10, 20, ...]
+    days_with_payments = [(i + 1) * 10 for i in range(periods)]
+    payments = calculate_payments(
+        yearly_payments_percentage,
+        client_cost_reductions,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertEqual(len(payments), len(client_cost_reductions))
+    for i, _ in enumerate(payments[:-1]):
+        self.assertLess(
+            payments[i],
+            payments[i + 1],
+        )
