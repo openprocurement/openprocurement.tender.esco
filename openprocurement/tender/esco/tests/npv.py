@@ -14,6 +14,8 @@ class NPVCalculationTest(unittest.TestCase):
     """
 
     test_contract_duration = snitch(contract_duration)
+    test_days_with_cost_reduction = snitch(days_with_cost_reduction)
+    test_days_for_discount_rate = snitch(days_for_discount_rate)
     test_discount_rate = snitch(discount_rate)
     test_discount_rates = snitch(discount_rates)
 

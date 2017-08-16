@@ -42,6 +42,46 @@ def contract_duration(self):
     )
 
 
+
+def days_with_cost_reduction(self):
+    # First test
+    announcement_date = datetime.date(2017, 8, 18)
+    self.assertEqual(
+        calculate_days_with_cost_reduction(DAYS_PER_YEAR, announcement_date),
+        [135, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
+    )
+    
+    announcement_date = datetime.date(2020, 1, 20)
+    self.assertEqual(
+        calculate_days_with_cost_reduction(DAYS_PER_YEAR, announcement_date),
+        [347, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
+    )
+    
+    announcement_date = datetime.date(2019, 1, 20)
+    self.assertEqual(
+        calculate_days_with_cost_reduction(DAYS_PER_YEAR, announcement_date),
+        [346, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365, 365]
+    )
+
+
+def days_for_discount_rate(self):
+    announcement_date = datetime.date(2017, 8, 18)
+    days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
+    # (NPV_CALCULATION_DURATION - 1) is a number of full years
+    expected_days = [135] + [365] * (NPV_CALCULATION_DURATION - 1) + [230]
+    self.assertEqual(days, expected_days)
+
+    anouncement_date = datetime.date(2020, 1, 20)
+    days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
+    expected_days = [347] + [365] * (NPV_CALCULATION_DURATION - 1) + [19]
+    self.assertEqual(days, expected_dayes)
+
+    anouncement_date = datetime.date(2019, 1, 20)
+    days = calculate_days_for_discount_rate(DAYS_PER_YEAR, announcement_date)
+    expected_days = [346] + [365] * (NPV_CALCULATION_DURATION - 1) + [19]
+    self.assertEqual(days, expected_dayes)
+
+
 def discount_rate(self):
 
     # Predefined value
