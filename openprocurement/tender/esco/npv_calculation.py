@@ -34,3 +34,7 @@ def calculate_discount_rates(
             days_per_year,
         ) for days_for_discount_rate in days_for_discount_rates
     ]
+
+
+def calculate_amount_of_discounted_income(discounted_incomes):
+    return sum(discounted_incomes)

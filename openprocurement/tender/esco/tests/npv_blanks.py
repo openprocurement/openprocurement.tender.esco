@@ -1,9 +1,12 @@
+from fractions import Fraction
+
 from openprocurement.tender.esco.utils import calculate_npv
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR
 from openprocurement.tender.esco.npv_calculation import (
     calculate_contract_duration,
     calculate_discount_rate,
     calculate_discount_rates,
+    calculate_amount_of_discounted_income,
 )
 
 
@@ -102,3 +105,23 @@ def discount_rates(self):
     self.assertEqual(len(days), len(calculated_rates))
     self.assertEqual(calculated_rates[0], predefined_rate1)
     self.assertEqual(calculated_rates[-1], predefined_rate2)
+
+
+def amount_of_discounted_income(self):
+    discounted_incomes = [Fraction(331493, 12500), Fraction(255, 4), Fraction(453, 8), Fraction(9375883, 100000),
+                          Fraction(597, 4),
+                          Fraction(265, 2), Fraction(471, 4), Fraction(419, 4), Fraction(331, 4), Fraction(373, 4),
+                          Fraction(147, 2),
+                          Fraction(131, 2), Fraction(233, 4), Fraction(207, 4), Fraction(46, 1), Fraction(163, 4),
+                          Fraction(129, 4),
+                          Fraction(145, 4), Fraction(115, 4), Fraction(51, 2), Fraction(299307, 20000)]
+    self.assertEqual(
+        calculate_amount_of_discounted_income(discounted_incomes),
+        Fraction(69718431, 50000)
+    )
+
+    discounted_incomes = [Fraction(0)]*21
+    self.assertEqual(
+        calculate_amount_of_discounted_income(discounted_incomes),
+        Fraction(0, 1)
+    )
