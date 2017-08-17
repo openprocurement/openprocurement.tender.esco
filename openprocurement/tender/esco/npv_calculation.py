@@ -1,5 +1,3 @@
-from fractions import Fraction
-from openprocurement.tender.esco.constants import DAYS_PER_YEAR
 from datetime import date
 from fractions import Fraction
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
