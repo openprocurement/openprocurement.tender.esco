@@ -1,13 +1,36 @@
 from datetime import date
+from fractions import Fraction
+from openprocurement.tender.esco.tests.npv_test_data import DISCOUNT_COEF
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 from openprocurement.tender.esco.npv_calculation import (
     calculate_contract_duration,
     calculate_discount_rate,
     calculate_discount_rates,
+    calculate_discount_coef,
     calculate_days_with_cost_reduction,
 )
 
 nbu_rate = 0.22
+
+
+def discount_coef(self):
+    discount_rate = [Fraction(str(0.04623))]+[Fraction(str(0.125))]*19 + [Fraction(str(0.07877))]
+    self.assertEqual(
+        calculate_discount_coef(discount_rate),
+        DISCOUNT_COEF['first_test']
+    )
+
+    discount_rate = [Fraction(str(0))]*21
+    self.assertEqual(
+        calculate_discount_coef(discount_rate),
+        DISCOUNT_COEF['second_test']
+    )
+
+    discount_rate = [Fraction(str(0.12500))] * 21
+    self.assertEqual(
+        calculate_discount_coef(discount_rate),
+        DISCOUNT_COEF['third_test']
+    )
 
 
 def contract_duration(self):

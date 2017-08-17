@@ -3,6 +3,15 @@ from fractions import Fraction
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 
 
+def calculate_discount_coef(discount_rate):
+    discount_coef = []
+    coefficient = Fraction(1)
+    for i in discount_rate:
+        coefficient = Fraction(coefficient, (i+Fraction(1)))
+        discount_coef.append(coefficient)
+    return discount_coef
+
+  
 def calculate_contract_duration(
         contract_duration_years,
         contract_duration_days,
