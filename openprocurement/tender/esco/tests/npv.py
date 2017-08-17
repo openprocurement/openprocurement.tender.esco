@@ -6,6 +6,7 @@ from openprocurement.tender.esco.tests.npv_blanks import (
     discount_rate,
     discount_rates,
     amount_of_discounted_income,
+    days_with_cost_reduction,
 )
 
 
@@ -18,6 +19,7 @@ class NPVCalculationTest(unittest.TestCase):
     test_discount_rate = snitch(discount_rate)
     test_discount_rates = snitch(discount_rates)
     test_amount_of_discounted_income = snitch(amount_of_discounted_income)
+    test_days_with_cost_reduction = snitch(days_with_cost_reduction)
 
 
 def suite():

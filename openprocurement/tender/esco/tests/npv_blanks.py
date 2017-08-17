@@ -1,14 +1,14 @@
+from datetime import date
 from fractions import Fraction
-
 from openprocurement.tender.esco.utils import calculate_npv
-from openprocurement.tender.esco.constants import DAYS_PER_YEAR
+from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 from openprocurement.tender.esco.npv_calculation import (
     calculate_contract_duration,
     calculate_discount_rate,
     calculate_discount_rates,
     calculate_amount_of_discounted_income,
+    calculate_days_with_cost_reduction,
 )
-
 
 nbu_rate = 0.22
 
@@ -46,7 +46,6 @@ def contract_duration(self):
 
 
 def discount_rate(self):
-
     # Predefined value
     nbu_rate = 12.5
     days = 135
@@ -68,7 +67,6 @@ def discount_rate(self):
 
 
 def discount_rates(self):
-
     periods = 21
 
     # All days for discount rate are zeros
@@ -124,4 +122,25 @@ def amount_of_discounted_income(self):
     self.assertEqual(
         calculate_amount_of_discounted_income(discounted_incomes),
         Fraction(0, 1)
+    )
+    
+    
+def days_with_cost_reduction(self):
+    # First test
+    announcement_date = date(2017, 8, 18)
+    self.assertEqual(
+        calculate_days_with_cost_reduction(announcement_date, DAYS_PER_YEAR),
+        [135] + [365] * NPV_CALCULATION_DURATION
+    )
+
+    announcement_date = date(2020, 01, 20)
+    self.assertEqual(
+        calculate_days_with_cost_reduction(announcement_date, DAYS_PER_YEAR),
+        [346] + [365] * NPV_CALCULATION_DURATION
+    )
+
+    announcement_date = date(2019, 01, 20)
+    self.assertEqual(
+        calculate_days_with_cost_reduction(announcement_date, DAYS_PER_YEAR),
+        [345] + [365] * NPV_CALCULATION_DURATION
     )
