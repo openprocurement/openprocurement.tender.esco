@@ -37,6 +37,10 @@ def calculate_discount_rates(
     ]
 
 
+def calculate_amount_of_discounted_income(discounted_incomes):
+    return sum(discounted_incomes)
+  
+  
 def calculate_days_with_cost_reduction(
         announcement_date,
         days_per_year=DAYS_PER_YEAR,
