@@ -3,6 +3,9 @@ from openprocurement.api.tests.base import snitch
 
 from openprocurement.tender.esco.tests.npv_blanks import (
     discount_coef,
+    contract_duration,
+    discount_rate,
+    discount_rates,
 )
 
 
@@ -11,6 +14,10 @@ class NPVCalculationTest(unittest.TestCase):
         based on data from https://docs.google.com/spreadsheets/d/1kOz6bxob4Nmb0Es_W0TmbNznoYDcnwAKcSgxfPEXYGQ/edit#gid=1469973930
     """
     test_discount_coef = snitch(discount_coef)
+    test_contract_duration = snitch(contract_duration)
+    test_discount_rate = snitch(discount_rate)
+    test_discount_rates = snitch(discount_rates)
+
 
 def suite():
     suite = unittest.TestSuite()
