@@ -1,6 +1,8 @@
 from fractions import Fraction
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR
-
+from datetime import date
+from fractions import Fraction
+from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 
 DISCOUNT_RATE = [Fraction(str(4.623))]+[Fraction(str(12.500))]*19 + [Fraction(str(7.877))]
 
@@ -46,3 +48,11 @@ def calculate_discount_rates(
             days_per_year,
         ) for days_for_discount_rate in days_for_discount_rates
     ]
+
+
+def calculate_days_with_cost_reduction(
+        announcement_date,
+        days_per_year=DAYS_PER_YEAR,
+        ):
+    first_year_days = (date(announcement_date.year, 12, 31) - announcement_date).days
+    return [first_year_days] + [days_per_year] * NPV_CALCULATION_DURATION
