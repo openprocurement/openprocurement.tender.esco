@@ -87,10 +87,10 @@ def calculate_payments(
         days_for_discount_rate,
     )
 
-    return map(
-        lambda arg: calculate_payment(yearly_payments_percentage, *arg),
-        lists,
-    )
+    return [
+        calculate_payment(yearly_payments_percentage, *arg)
+        for arg in lists
+    ]
 
 
 def calculate_days_with_cost_reduction(
