@@ -64,8 +64,7 @@ def calculate_payment(
         # Fraction(3602879701896397, 18014398509481984)
 
         yearly_payments_percentage = Fraction(
-            Fraction(str(yearly_payments_percentage)),
-            100
+            str(yearly_payments_percentage)
         )
         client_cost_reduction = Fraction(str(client_cost_reduction))
 

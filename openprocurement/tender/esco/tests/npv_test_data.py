@@ -30,7 +30,7 @@ DISCOUNT_RATE = {'first_test': [Fraction(str(0.04623))]+[Fraction(str(0.125))]*1
                  }
 
 CLIENT_PAYMENT_DATA = {
-    'yearly_percentage': 70,
+    'yearly_percentage': 0.70,
     'client_cost_reduction': 92.47,
     'days_with_payments': 135,
     'days_for_discount_rate': 135,
@@ -38,7 +38,7 @@ CLIENT_PAYMENT_DATA = {
 }
 
 CLIENT_PAYMENTS_DATA = {
-    'yearly_percentage': 70.0,
+    'yearly_percentage': 0.70,
     'client_cost_reductions': [92.47] + [250.00] * 20,
     'days_with_payments': [135, 365, 365, 230] + [0] * (21 - 4),
     'days_for_discount_rate': [135, 365, 365, 365] + [0] * (21 - 4),

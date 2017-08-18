@@ -146,7 +146,7 @@ def client_payment(self):
 
     self.assertEqual(round(payment, prec), round(payment_predefined, prec))
     self.assertEqual(
-        round(yearly_payments_percentage * client_cost_reduction / 100, prec),
+        round(yearly_payments_percentage * client_cost_reduction, prec),
         round(payment_predefined, prec),
     )
 
