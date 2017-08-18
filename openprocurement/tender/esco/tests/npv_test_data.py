@@ -49,3 +49,38 @@ CLIENT_PAYMENTS_DATA = {
     'full_years_discount': [365] * 21,
     'growing_days_with_payments': [(i + 1) * 10 for i in range(21)],
 }
+
+DISCOUNTED_INCOME_COEF = {'input_data': [Fraction(str(0.956)),
+                          Fraction(str(0.850)), Fraction(str(0.755)),
+                          Fraction(str(0.671)), Fraction(str(0.597)),
+                          Fraction(str(0.530)), Fraction(str(0.471)),
+                          Fraction(str(0.419)), Fraction(str(0.373)),
+                          Fraction(str(0.331)), Fraction(str(0.294)),
+                          Fraction(str(0.262)), Fraction(str(0.233)),
+                          Fraction(str(0.207)), Fraction(str(0.184)),
+                          Fraction(str(0.163)), Fraction(str(0.145)),
+                          Fraction(str(0.129)), Fraction(str(0.115)),
+                          Fraction(str(0.102)), Fraction(str(0.095))]
+                          }
+INCOME_CUSTOMER = {'first_test': [Fraction(str(27.74))]+[Fraction(str(75.00))]+[Fraction(str(91.78))] +
+                                 [Fraction(str(139.73))]+[Fraction(str(250.00))]*16+[Fraction(str(157.53))],
+
+                   'second_test': [Fraction(str(0.095))]*21
+                   }
+
+DISCOUNTED_INCOME_RES = {'first_test':[Fraction(331493, 12500), Fraction(255, 4), Fraction(692939, 10000),
+                                       Fraction(9375883, 100000), Fraction(597, 4), Fraction(265, 2), Fraction(471, 4),
+                                       Fraction(419, 4), Fraction(373, 4), Fraction(331, 4), Fraction(147, 2),
+                                       Fraction(131, 2), Fraction(233, 4), Fraction(207, 4), Fraction(46, 1),
+                                       Fraction(163, 4),  Fraction(145, 4), Fraction(129, 4), Fraction(115, 4),
+                                       Fraction(51, 2), Fraction(299307, 20000)],
+
+                         'second_test': [Fraction(4541, 50000), Fraction(323, 4000), Fraction(2869, 40000),
+                                         Fraction(12749, 200000), Fraction(11343, 200000), Fraction(1007, 20000),
+                                         Fraction(8949, 200000), Fraction(7961, 200000), Fraction(7087, 200000),
+                                         Fraction(6289, 200000), Fraction(2793, 100000), Fraction(2489, 100000),
+                                         Fraction(4427, 200000), Fraction(3933, 200000), Fraction(437, 25000),
+                                         Fraction(3097, 200000), Fraction(551, 40000), Fraction(2451, 200000),
+                                         Fraction(437, 40000), Fraction(969, 100000), Fraction(361, 40000)]
+
+                         }

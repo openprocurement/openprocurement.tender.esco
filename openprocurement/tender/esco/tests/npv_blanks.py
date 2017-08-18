@@ -4,6 +4,9 @@ from openprocurement.tender.esco.tests.npv_test_data import (
     DISCOUNT_RATE,
     CLIENT_PAYMENT_DATA,
     CLIENT_PAYMENTS_DATA,
+    DISCOUNTED_INCOME_COEF,
+    INCOME_CUSTOMER,
+    DISCOUNTED_INCOME_RES,
 )
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 from openprocurement.tender.esco.npv_calculation import (
@@ -12,6 +15,7 @@ from openprocurement.tender.esco.npv_calculation import (
     calculate_discount_rates,
     calculate_payment,
     calculate_payments,
+    calculate_discounted_income,
     calculate_discount_coef,
     calculate_days_with_cost_reduction,
 )
@@ -239,6 +243,18 @@ def client_payments(self):
             payments[i],
             payments[i + 1],
         )
+
+
+def discounted_income(self):
+    self.assertEqual(
+        calculate_discounted_income(DISCOUNTED_INCOME_COEF['input_data'], INCOME_CUSTOMER['first_test']),
+        DISCOUNTED_INCOME_RES['first_test']
+    )
+
+    self.assertEqual(
+        calculate_discounted_income(DISCOUNTED_INCOME_COEF['input_data'], INCOME_CUSTOMER['second_test']),
+        DISCOUNTED_INCOME_RES['second_test']
+    )
 
 
 def days_with_cost_reduction(self):
