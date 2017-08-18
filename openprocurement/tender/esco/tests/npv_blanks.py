@@ -1,5 +1,10 @@
 from datetime import date
-from openprocurement.tender.esco.tests.npv_test_data import DISCOUNT_COEF, DISCOUNT_RATE
+from openprocurement.tender.esco.tests.npv_test_data import (
+    DISCOUNT_COEF,
+    DISCOUNT_RATE,
+    CLIENT_PAYMENT_DATA,
+    CLIENT_PAYMENTS_DATA,
+)
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 from openprocurement.tender.esco.npv_calculation import (
     calculate_contract_duration,
@@ -125,11 +130,11 @@ def discount_rates(self):
 def client_payment(self):
 
     # Predefined values
-    yearly_payments_percentage = 70.0
-    client_cost_reduction = 92.47
-    days_with_payments = 135
-    days_for_discount_rate = 135
-    payment_predefined = 64.73
+    yearly_payments_percentage = CLIENT_PAYMENT_DATA['yearly_percentage']
+    client_cost_reduction = CLIENT_PAYMENT_DATA['client_cost_reduction']
+    days_with_payments = CLIENT_PAYMENT_DATA['days_with_payments']
+    days_for_discount_rate = CLIENT_PAYMENT_DATA['days_for_discount_rate']
+    payment_predefined = CLIENT_PAYMENT_DATA['payment']
     prec = 2
 
     payment = calculate_payment(
@@ -183,12 +188,12 @@ def client_payments(self):
     periods = 21
 
     # Predefined values
-    yearly_payments_percentage = 70.0
-    client_cost_reductions = [92.47] + [250.00] * 20
-    days_with_payments = [135, 365, 365, 230] + [0] * (periods - 4)
-    days_for_discount_rate = [135, 365, 365, 365] + [0] * (periods - 4)
-    payments_predefined = [64.73, 175.00, 175.00, 110.27] + [0] * (periods - 4)
-    payments_sum = 525.00
+    yearly_payments_percentage = CLIENT_PAYMENTS_DATA['yearly_percentage']
+    client_cost_reductions = CLIENT_PAYMENTS_DATA['client_cost_reductions']
+    days_with_payments = CLIENT_PAYMENTS_DATA['days_with_payments']
+    days_for_discount_rate = CLIENT_PAYMENTS_DATA['days_for_discount_rate']
+    payments_predefined = CLIENT_PAYMENTS_DATA['payments']
+    payments_sum = CLIENT_PAYMENTS_DATA['payments_sum']
     prec = 2
 
     payments = calculate_payments(
@@ -207,8 +212,8 @@ def client_payments(self):
     self.assertEqual(round(sum(payments), prec), round(payments_sum, prec))
 
     # No days for payments at all
-    days_with_payments = [0] * periods
-    days_for_discount_rate = [365] * periods
+    days_with_payments = CLIENT_PAYMENTS_DATA['days_no_payments']
+    days_for_discount_rate = CLIENT_PAYMENTS_DATA['full_years_discount']
     payments = calculate_payments(
         yearly_payments_percentage,
         client_cost_reductions,
@@ -221,7 +226,7 @@ def client_payments(self):
 
     # If there is more days for payments than payment must be greater
     # days_with_payments = [10, 20, ...]
-    days_with_payments = [(i + 1) * 10 for i in range(periods)]
+    days_with_payments = CLIENT_PAYMENTS_DATA['growing_days_with_payments']
     payments = calculate_payments(
         yearly_payments_percentage,
         client_cost_reductions,
