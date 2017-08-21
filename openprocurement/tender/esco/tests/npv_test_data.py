@@ -29,6 +29,27 @@ DISCOUNT_RATE = {'first_test': [Fraction(str(0.04623))]+[Fraction(str(0.125))]*1
                  'third_test': [Fraction(str(0.12500))] * 21
                  }
 
+CLIENT_PAYMENT_DATA = {
+    'yearly_percentage': 0.70,
+    'client_cost_reduction': 92.47,
+    'days_with_payments': 135,
+    'days_for_discount_rate': 135,
+    'payment': 64.73,
+}
+
+CLIENT_PAYMENTS_DATA = {
+    'yearly_percentage': 0.70,
+    'client_cost_reductions': [92.47] + [250.00] * 20,
+    'days_with_payments': [135, 365, 365, 230] + [0] * (21 - 4),
+    'days_for_discount_rate': [135, 365, 365, 365] + [0] * (21 - 4),
+    'payments':
+        [64.73, 175.00, 175.00, 110.27] + [0] * (21 - 4),
+    'payments_sum': 525.00,
+    'days_no_payments': [0] * 21,
+    'full_years_discount': [365] * 21,
+    'growing_days_with_payments': [(i + 1) * 10 for i in range(21)],
+}
+
 DISCOUNTED_INCOME_COEF = {'input_data': [Fraction(str(0.956)),
                           Fraction(str(0.850)), Fraction(str(0.755)),
                           Fraction(str(0.671)), Fraction(str(0.597)),
@@ -63,4 +84,3 @@ DISCOUNTED_INCOME_RES = {'first_test':[Fraction(331493, 12500), Fraction(255, 4)
                                          Fraction(437, 40000), Fraction(969, 100000), Fraction(361, 40000)]
 
                          }
-

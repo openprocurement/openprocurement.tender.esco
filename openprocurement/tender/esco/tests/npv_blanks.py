@@ -2,6 +2,8 @@ from datetime import date
 from openprocurement.tender.esco.tests.npv_test_data import (
     DISCOUNT_COEF,
     DISCOUNT_RATE,
+    CLIENT_PAYMENT_DATA,
+    CLIENT_PAYMENTS_DATA,
     DISCOUNTED_INCOME_COEF,
     INCOME_CUSTOMER,
     DISCOUNTED_INCOME_RES,
@@ -11,6 +13,8 @@ from openprocurement.tender.esco.npv_calculation import (
     calculate_contract_duration,
     calculate_discount_rate,
     calculate_discount_rates,
+    calculate_payment,
+    calculate_payments,
     calculate_discounted_income,
     calculate_discount_coef,
     calculate_days_with_cost_reduction,
@@ -125,6 +129,120 @@ def discount_rates(self):
     self.assertEqual(len(days), len(calculated_rates))
     self.assertEqual(calculated_rates[0], predefined_rate1)
     self.assertEqual(calculated_rates[-1], predefined_rate2)
+
+
+def client_payment(self):
+
+    # Predefined values
+    yearly_payments_percentage = CLIENT_PAYMENT_DATA['yearly_percentage']
+    client_cost_reduction = CLIENT_PAYMENT_DATA['client_cost_reduction']
+    days_with_payments = CLIENT_PAYMENT_DATA['days_with_payments']
+    days_for_discount_rate = CLIENT_PAYMENT_DATA['days_for_discount_rate']
+    payment_predefined = CLIENT_PAYMENT_DATA['payment']
+    prec = 2
+
+    payment = calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+
+    self.assertEqual(round(payment, prec), round(payment_predefined, prec))
+    self.assertEqual(
+        round(yearly_payments_percentage * client_cost_reduction, prec),
+        round(payment_predefined, prec),
+    )
+
+    # No days for payments at all
+    days_with_payments = 0
+    payment = calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertEqual(payment, 0)
+
+    # If there is more days for payments than payment must be greater
+    last_payment = payment
+    days_with_payments += 1
+    payment = calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertGreater(payment, last_payment)
+
+    # If there is less days for payments than payment must be smaller
+    last_payment = payment
+    days_with_payments -= 10
+    payment = calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertLess(payment, last_payment)
+
+
+def client_payments(self):
+
+    periods = 21
+
+    # Predefined values
+    yearly_payments_percentage = CLIENT_PAYMENTS_DATA['yearly_percentage']
+    client_cost_reductions = CLIENT_PAYMENTS_DATA['client_cost_reductions']
+    days_with_payments = CLIENT_PAYMENTS_DATA['days_with_payments']
+    days_for_discount_rate = CLIENT_PAYMENTS_DATA['days_for_discount_rate']
+    payments_predefined = CLIENT_PAYMENTS_DATA['payments']
+    payments_sum = CLIENT_PAYMENTS_DATA['payments_sum']
+    prec = 2
+
+    payments = calculate_payments(
+        yearly_payments_percentage,
+        client_cost_reductions,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertEqual(len(payments), len(client_cost_reductions))
+    for i, _ in enumerate(payments):
+        self.assertEqual(
+            round(payments[i], prec),
+            round(payments_predefined[i], prec)
+        )
+
+    self.assertEqual(round(sum(payments), prec), round(payments_sum, prec))
+
+    # No days for payments at all
+    days_with_payments = CLIENT_PAYMENTS_DATA['days_no_payments']
+    days_for_discount_rate = CLIENT_PAYMENTS_DATA['full_years_discount']
+    payments = calculate_payments(
+        yearly_payments_percentage,
+        client_cost_reductions,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertEqual(len(payments), len(client_cost_reductions))
+    for payment in payments:
+        self.assertEqual(payment, 0)
+
+    # If there is more days for payments than payment must be greater
+    # days_with_payments = [10, 20, ...]
+    days_with_payments = CLIENT_PAYMENTS_DATA['growing_days_with_payments']
+    payments = calculate_payments(
+        yearly_payments_percentage,
+        client_cost_reductions,
+        days_with_payments,
+        days_for_discount_rate,
+    )
+    self.assertEqual(len(payments), len(client_cost_reductions))
+    for i, _ in enumerate(payments[:-1]):
+        self.assertLess(
+            payments[i],
+            payments[i + 1],
+        )
 
 
 def discounted_income(self):

@@ -46,6 +46,55 @@ def calculate_discount_rates(
     ]
 
 
+def calculate_payment(
+        yearly_payments_percentage,
+        client_cost_reduction,
+        days_with_payments,
+        days_for_discount_rate):
+    '''Calculates client payment to a participant'''
+
+    if days_with_payments > 0:
+        # Transormation Fraction(str(float)) is done because of its
+        # better precision than Fraction(float).
+        #
+        # For example:
+        # >>> Fraction(str(0.2))
+        # Fraction(1, 5)
+        # >>> Fraction(0.2)
+        # Fraction(3602879701896397, 18014398509481984)
+
+        yearly_payments_percentage = Fraction(
+            str(yearly_payments_percentage)
+        )
+        client_cost_reduction = Fraction(str(client_cost_reduction))
+
+        return (yearly_payments_percentage * client_cost_reduction *
+                Fraction(days_with_payments, days_for_discount_rate))
+    return 0
+
+
+def calculate_payments(
+        yearly_payments_percentage,
+        client_cost_reductions,
+        days_with_payments,
+        days_for_discount_rate):
+    '''Calculates client payments to a participant'''
+
+    payments = []
+
+    for i, _ in enumerate(client_cost_reductions):
+        payments.append(
+            calculate_payment(
+                yearly_payments_percentage,
+                client_cost_reductions[i],
+                days_with_payments[i],
+                days_for_discount_rate[i],
+            )
+        )
+
+    return payments
+
+
 def calculate_discounted_income(coef_discount, income_customer):
     count = 0
     discounted_income = []
