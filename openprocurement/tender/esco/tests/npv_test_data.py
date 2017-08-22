@@ -64,3 +64,6 @@ DISCOUNTED_INCOME_RES = {'first_test':[Fraction(331493, 12500), Fraction(255, 4)
 
                          }
 
+COST_REDUCTIONS = {'first_test':[Fraction("92.47")] + [Fraction("250.0")] * 20}
+PAYMENTS = {'first_test':[Fraction("64.73"), Fraction("175.0"), Fraction("175.0"), Fraction("110.27")] + [Fraction("0.0")] * 17}
+EXPECTED_INCOME = {'first_test':[Fraction("27.74"), Fraction("75.0"), Fraction("75.0"), Fraction("139.73")] + [Fraction("250.0")] * 17}
