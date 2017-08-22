@@ -61,3 +61,26 @@ def calculate_days_with_cost_reduction(
         ):
     first_year_days = (date(announcement_date.year, 12, 31) - announcement_date).days
     return [first_year_days] + [days_per_year] * NPV_CALCULATION_DURATION
+
+
+def calculate_days_for_discount_rate(days_with_cost_reduction):
+    days = days_with_cost_reduction[:-1]
+    days.append(DAYS_PER_YEAR - days[0])
+    return days
+
+
+def calculate_days_with_payments(
+        contract_duration,
+        first_year_days,
+        days_per_year=DAYS_PER_YEAR
+        ):
+    days = [min(contract_duration, first_year_days)]
+    contract_duration -= days[0]
+    days += [days_per_year] * (contract_duration // days_per_year) + [contract_duration % days_per_year]
+    if (len(days) < NPV_CALCULATION_DURATION):
+        days += [0] * (NPV_CALCULATION_DURATION + 1 - len(days))
+    return days
+
+
+def calculate_income(client_cost_reductions, client_payments):
+    return [client_cost_reductions[i] - client_payments[i] for i in range(len(client_cost_reductions))]

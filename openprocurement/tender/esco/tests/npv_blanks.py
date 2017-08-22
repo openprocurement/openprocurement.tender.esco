@@ -5,6 +5,9 @@ from openprocurement.tender.esco.tests.npv_test_data import (
     DISCOUNTED_INCOME_COEF,
     INCOME_CUSTOMER,
     DISCOUNTED_INCOME_RES,
+    COST_REDUCTIONS,
+    PAYMENTS,
+    EXPECTED_INCOME,
 )
 from openprocurement.tender.esco.constants import DAYS_PER_YEAR, NPV_CALCULATION_DURATION
 from openprocurement.tender.esco.npv_calculation import (
@@ -14,6 +17,9 @@ from openprocurement.tender.esco.npv_calculation import (
     calculate_discounted_income,
     calculate_discount_coef,
     calculate_days_with_cost_reduction,
+    calculate_days_for_discount_rate,
+    calculate_days_with_payments,
+    calculate_income,
 )
 
 nbu_rate = 0.22
@@ -146,14 +152,43 @@ def days_with_cost_reduction(self):
         [135] + [365] * NPV_CALCULATION_DURATION
     )
 
-    announcement_date = date(2020, 01, 20)
+    announcement_date = date(2020, 1, 20)
     self.assertEqual(
         calculate_days_with_cost_reduction(announcement_date, DAYS_PER_YEAR),
         [346] + [365] * NPV_CALCULATION_DURATION
     )
 
-    announcement_date = date(2019, 01, 20)
+    announcement_date = date(2019, 1, 20)
     self.assertEqual(
         calculate_days_with_cost_reduction(announcement_date, DAYS_PER_YEAR),
         [345] + [365] * NPV_CALCULATION_DURATION
     )
+
+
+def days_for_discount_rate(self):
+    days = calculate_days_for_discount_rate([135] + [365] * NPV_CALCULATION_DURATION)
+    # (NPV_CALCULATION_DURATION - 1) is a number of full years
+    expected_days = [135] + [365] * (NPV_CALCULATION_DURATION - 1) + [230]
+    self.assertEqual(days, expected_days)
+
+    days = calculate_days_for_discount_rate([346] + [365] * NPV_CALCULATION_DURATION)
+    expected_days = [346] + [365] * (NPV_CALCULATION_DURATION - 1) + [19]
+    self.assertEqual(days, expected_days)
+
+    days = calculate_days_for_discount_rate([345] + [365] * NPV_CALCULATION_DURATION)
+    expected_days = [345] + [365] * (NPV_CALCULATION_DURATION - 1) + [20]
+    self.assertEqual(days, expected_days)
+
+
+def days_with_payments(self):
+    days = calculate_days_with_payments(830, 135)
+    expected_days = [135, 365, 330] + [0] * 18
+    self.assertEqual(days, expected_days)
+
+
+def income(self):
+    client_cost_reductions = COST_REDUCTIONS['first_test']
+    client_payments = PAYMENTS['first_test']
+    client_income = calculate_income(client_cost_reductions, client_payments)
+    expected_client_income = EXPECTED_INCOME['first_test']
+    self.assertEqual(client_income, expected_client_income)
