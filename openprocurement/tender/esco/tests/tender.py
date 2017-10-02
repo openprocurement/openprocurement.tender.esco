@@ -70,6 +70,7 @@ class TestTenderEU(BaseESCOContentWebTest, TenderResourceTestMixin, TenderUAReso
     test_tender_data['submissionMethodDetails'] = "quick(mode:no-auction)"  # TODO: remove this line after adding auction
     initial_data = test_tender_data
     # for passing test from TenderUAResourceTestMixin
+    tender_period_days = 30
     initial_data['minValue'] = {"amount": 0}
     test_lots_data = test_lots
     test_bids_data = test_bids
