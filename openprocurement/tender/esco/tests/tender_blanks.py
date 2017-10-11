@@ -897,6 +897,11 @@ def tender_with_nbu_discount_rate(self):
     self.assertIn('NBUdiscountRate', response.json['data'])
     self.assertEqual(response.json['data']['NBUdiscountRate'], 0.3)
 
+    response = self.app.patch_json('/tenders/{}?acc_token={}'.format(tender['id'], owner_token),
+                                   {"data": {"NBUdiscountRate": 0.50388}})
+    self.assertEqual(response.status, '200 OK')
+    self.assertIn('NBUdiscountRate', response.json['data'])
+    self.assertEqual(response.json['data']['NBUdiscountRate'], 0.50388)
 
 def tender_features_invalid(self):
     data = self.initial_data.copy()
