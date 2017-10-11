@@ -1,14 +1,12 @@
-PATCH /api/2.4/tenders/b204841c7ee844019a1038571b96b55a/lots/e550e623efa7415aa6b5954f451af303?acc_token=8f76350634a34ab7bcb1c24149296e88 HTTP/1.0
+PATCH /api/2.4/tenders/032ad48817a74526a52bbdc065449884?acc_token=b0f3fe41a6644097a0f0c1eebb4442ae HTTP/1.0
 Authorization: Basic YnJva2VyOg==
-Content-Length: 39
+Content-Length: 35
 Content-Type: application/json
 Host: api-sandbox.openprocurement.org
 DATA:
 {
   "data": {
-    "minValue": {
-      "amount": 400
-    }
+    "NBUdiscountRate": 0.26
   }
 }
 
@@ -16,22 +14,167 @@ Response: 200 OK
 Content-Type: application/json; charset=UTF-8
 {
   "data": {
-    "status": "active", 
-    "description": "Опис Лот №2", 
-    "fundingKind": "other", 
-    "title": "Лот №2", 
-    "auctionPeriod": {
-      "shouldStartAfter": "2017-12-08T11:17:21.274494+03:00"
+    "procurementMethod": "open", 
+    "complaintPeriod": {
+      "startDate": "2017-10-06T17:05:14.661702+03:00", 
+      "endDate": "2017-11-02T00:00:00+02:00"
     }, 
+    "enquiryPeriod": {
+      "startDate": "2017-10-06T17:05:14.661702+03:00", 
+      "clarificationsUntil": "2017-11-01T17:04:36.741633+03:00", 
+      "endDate": "2017-10-27T17:04:36.741633+03:00", 
+      "invalidationDate": "2017-10-06T17:05:15.819153+03:00"
+    }, 
+    "submissionMethod": "electronicAuction", 
+    "next_check": "2017-11-06T16:04:36.741633+02:00", 
+    "procuringEntity": {
+      "kind": "general", 
+      "name": "ЗОСШ #10 м.Вінниці", 
+      "address": {
+        "postalCode": "21027", 
+        "countryName": "Україна", 
+        "streetAddress": "вул. Стахурського. 22", 
+        "region": "м. Вінниця", 
+        "locality": "м. Вінниця"
+      }, 
+      "contactPoint": {
+        "url": "http://sch10.edu.vn.ua/", 
+        "name_en": "Kutsa Svitlana V.", 
+        "name": "Куца Світлана Валентинівна", 
+        "availableLanguage": "uk", 
+        "telephone": "+380 (432) 46-53-02"
+      }, 
+      "identifier": {
+        "scheme": "UA-EDR", 
+        "legalName_en": "The institution \"Secondary school I-III levels № 10 Vinnitsa City Council\"", 
+        "id": "21725150", 
+        "legalName": "Заклад \"Загальноосвітня школа І-ІІІ ступенів № 10 Вінницької міської ради\""
+      }, 
+      "name_en": "School #10 of Vinnytsia"
+    }, 
+    "owner": "broker", 
+    "title_en": "Services in school canteens", 
+    "id": "032ad48817a74526a52bbdc065449884", 
+    "title": "Послуги шкільних їдалень", 
+    "lots": [
+      {
+        "status": "active", 
+        "description": "Опис Лот №1", 
+        "fundingKind": "other", 
+        "title": "Лот №1", 
+        "auctionPeriod": {
+          "shouldStartAfter": "2017-12-11T17:04:36.741633+03:00"
+        }, 
+        "minValue": {
+          "currency": "UAH", 
+          "amount": 0.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "minimalStepPercentage": 0.006, 
+        "yearlyPaymentsPercentageRange": 0.8, 
+        "date": "2017-10-06T17:05:14.764545+03:00", 
+        "id": "0e0d16f25ed5424a9dc07eeee9976392"
+      }, 
+      {
+        "status": "active", 
+        "description": "Опис Лот №2", 
+        "fundingKind": "other", 
+        "title": "Лот №2", 
+        "auctionPeriod": {
+          "shouldStartAfter": "2017-12-11T17:04:36.741633+03:00"
+        }, 
+        "minValue": {
+          "currency": "UAH", 
+          "amount": 0.0, 
+          "valueAddedTaxIncluded": true
+        }, 
+        "minimalStepPercentage": 0.006, 
+        "yearlyPaymentsPercentageRange": 0.8, 
+        "date": "2017-10-06T17:05:14.829312+03:00", 
+        "id": "49ec2b91790f4d9ca46623916636f04c"
+      }
+    ], 
+    "tenderID": "UA-2017-10-06-000001", 
+    "minimalStepPercentage": 0.006, 
+    "yearlyPaymentsPercentageRange": 0.8, 
+    "dateModified": "2017-10-06T17:05:15.856939+03:00", 
+    "status": "active.tendering", 
+    "tenderPeriod": {
+      "startDate": "2017-10-06T17:05:14.661702+03:00", 
+      "endDate": "2017-11-06T17:04:36.741633+03:00"
+    }, 
+    "NBUdiscountRate": 0.26, 
+    "procurementMethodType": "esco", 
+    "date": "2017-10-06T17:05:14.695076+03:00", 
     "minValue": {
       "currency": "UAH", 
       "amount": 0.0, 
       "valueAddedTaxIncluded": true
     }, 
-    "minimalStepPercentage": 0.006, 
-    "yearlyPaymentsPercentageRange": 0.8, 
-    "date": "2017-10-03T11:18:05.407838+03:00", 
-    "id": "e550e623efa7415aa6b5954f451af303"
+    "fundingKind": "other", 
+    "submissionMethodDetails": "quick(mode:no-auction)", 
+    "items": [
+      {
+        "relatedLot": "0e0d16f25ed5424a9dc07eeee9976392", 
+        "description": "Послуги шкільних їдалень", 
+        "classification": {
+          "scheme": "ДК021", 
+          "description": "Test", 
+          "id": "37810000-9"
+        }, 
+        "description_en": "Services in school canteens", 
+        "additionalClassifications": [
+          {
+            "scheme": "ДКПП", 
+            "id": "17.21.1", 
+            "description": "Послуги шкільних їдалень"
+          }
+        ], 
+        "deliveryAddress": {
+          "postalCode": "79000", 
+          "countryName": "Україна", 
+          "streetAddress": "вул. Банкова 1", 
+          "region": "м. Київ", 
+          "locality": "м. Київ"
+        }, 
+        "id": "0df1aa24500d476a931f6c47d81dc593", 
+        "unit": {
+          "code": "44617100-9", 
+          "name": "item"
+        }
+      }, 
+      {
+        "relatedLot": "49ec2b91790f4d9ca46623916636f04c", 
+        "description": "Послуги шкільних їдалень", 
+        "classification": {
+          "scheme": "ДК021", 
+          "description": "Test", 
+          "id": "37810000-9"
+        }, 
+        "description_en": "Services in school canteens", 
+        "additionalClassifications": [
+          {
+            "scheme": "ДКПП", 
+            "id": "17.21.1", 
+            "description": "Послуги шкільних їдалень"
+          }
+        ], 
+        "deliveryAddress": {
+          "postalCode": "79000", 
+          "countryName": "Україна", 
+          "streetAddress": "вул. Банкова 1", 
+          "region": "м. Київ", 
+          "locality": "м. Київ"
+        }, 
+        "id": "47a9eef36e0f40b8b2b3907f862fd859", 
+        "unit": {
+          "code": "44617100-9", 
+          "name": "item"
+        }
+      }
+    ], 
+    "noticePublicationDate": "2017-10-06T17:05:14.674205+03:00", 
+    "awardCriteria": "ratedCriteria"
   }
 }
 

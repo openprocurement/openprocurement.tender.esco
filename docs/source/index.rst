@@ -20,6 +20,7 @@ Contents:
 
    overview
    tutorial
+   multiple_lots_tutorial
    standard/index.rst
 
 

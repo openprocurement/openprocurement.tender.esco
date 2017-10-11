@@ -1587,13 +1587,16 @@ class TenderResourceTest(BaseESCOWebTest):
 
         # add lots
         with open('docs/source/multiple_lots_tutorial/tender-add-lot.http', 'w') as self.app.file_obj:
-            response = self.app.post_json('/tenders/{}/lots?acc_token={}'.format(tender_id, owner_token), {'data': test_lots[0]})
+            response = self.app.post_json('/tenders/{}/lots?acc_token={}'.format(tender_id, owner_token),
+                                          {'data': test_lots[0]})
             self.assertEqual(response.status, '201 Created')
             lot_id1 = response.json['data']['id']
-
-        response = self.app.post_json('/tenders/{}/lots?acc_token={}'.format(tender_id, owner_token), {'data': test_lots[1]})
-        self.assertEqual(response.status, '201 Created')
-        lot_id2 = response.json['data']['id']
+        # add second lot
+        with open('docs/source/multiple_lots_tutorial/tender-add-lot2.http', 'w') as self.app.file_obj:
+            response = self.app.post_json('/tenders/{}/lots?acc_token={}'.format(tender_id, owner_token),
+                                          {'data': test_lots[1]})
+            self.assertEqual(response.status, '201 Created')
+            lot_id2 = response.json['data']['id']
 
         # add relatedLot for item
         with open('docs/source/multiple_lots_tutorial/tender-add-relatedLot-to-item.http', 'w') as self.app.file_obj:
@@ -1601,6 +1604,8 @@ class TenderResourceTest(BaseESCOWebTest):
                                            {"data": {"items": [{'relatedLot': lot_id1}, {'relatedLot': lot_id2}]}})
             self.assertEqual(response.status, '200 OK')
 
+        # we need to make two requests to get list of tenders. Because first request gives empty list.
+        response = self.app.get(request_path)
         with open('docs/source/multiple_lots_tutorial/tender-listing-no-auth.http', 'w') as self.app.file_obj:
             self.app.authorization = None
             response = self.app.get(request_path)
@@ -1656,7 +1661,8 @@ class TenderResourceTest(BaseESCOWebTest):
             bid2_token = response.json['access']['token']
 
         with open('docs/source/multiple_lots_tutorial/tender-invalid-all-bids.http', 'w') as self.app.file_obj:
-            response = self.app.patch_json('/tenders/{}/lots/{}?acc_token={}'.format(tender_id, lot_id2, owner_token), {'data': {'minValue': {'amount': 400}}})
+            response = self.app.patch_json('/tenders/{}?acc_token={}'.format(tender_id, owner_token),
+                                           {'data': {"NBUdiscountRate": 0.26}})
             self.assertEqual(response.status, '200 OK')
 
         with open('docs/source/multiple_lots_tutorial/bid-lot1-invalid-view.http', 'w') as self.app.file_obj:
@@ -1666,13 +1672,37 @@ class TenderResourceTest(BaseESCOWebTest):
         with open('docs/source/multiple_lots_tutorial/bid-lot1-update-view.http', 'w') as self.app.file_obj:
             response = self.app.patch_json('/tenders/{}/bids/{}?acc_token={}'.format(tender_id, bid1_id, bid1_token),
                                            {'data': {'lotValues': [{"subcontractingDetails": "ДКП «Орфей»",
-                                                                    "value": {"amount": 500}, 'relatedLot': lot_id1}], 'status': 'pending'}})
+                                                                    "value": {
+                                                                        'annualCostsReduction': [200] + [1000] * 20,
+                                                                        'yearlyPaymentsPercentage': 0.87,
+                                                                        'contractDuration': {
+                                                                            "years": 7
+                                                                        }
+                                                                        },
+                                                                     'relatedLot': lot_id1}], 'status': 'pending'}})
             self.assertEqual(response.status, '200 OK')
-
 
         with open('docs/source/multiple_lots_tutorial/bid-lot2-update-view.http', 'w') as self.app.file_obj:
             response = self.app.patch_json('/tenders/{}/bids/{}?acc_token={}'.format(tender_id, bid2_id, bid2_token),
-                                           {'data': {'lotValues': [{"value": {"amount": 500}, 'relatedLot': lot_id1}], 'status': 'pending'}})
+                                           {'data': {
+                                               'lotValues': [
+                                                   {"value": {'annualCostsReduction': [700] + [1600] * 20,
+                                                              'yearlyPaymentsPercentage': 0.9,
+                                                              'contractDuration': {
+                                                                  "years": 7
+                                                              }
+                                                              },
+                                                    'relatedLot': lot_id1},
+                                                   {"subcontractingDetails": "ДКП «Укр Прінт», Україна",
+                                                    "value": {'annualCostsReduction': [600] + [1200] * 20,
+                                                              'yearlyPaymentsPercentage': 0.96,
+                                                              'contractDuration': {
+                                                                  "years": 9
+                                                              }
+                                                              },
+                                                    'relatedLot': lot_id2}
+                                               ],
+                                               'status': 'pending'}})
             self.assertEqual(response.status, '200 OK')
         # switch to active.pre-qualification
         self.time_shift('active.pre-qualification')

@@ -1,6 +1,6 @@
-PATCH /api/2.4/tenders/b204841c7ee844019a1038571b96b55a/bids/abb1c9abb2e6488987c80753bcb459cb?acc_token=0f07d2f141674cb68732cab78505f75e HTTP/1.0
+PATCH /api/2.4/tenders/032ad48817a74526a52bbdc065449884/bids/309506e3a03e4523b5272fedfb04ec3b?acc_token=8dd54ed8bad5464f8ba2a9c2b63ae125 HTTP/1.0
 Authorization: Basic YnJva2VyOg==
-Content-Length: 124
+Content-Length: 762
 Content-Type: application/json
 Host: api-sandbox.openprocurement.org
 DATA:
@@ -9,10 +9,69 @@ DATA:
     "status": "pending", 
     "lotValues": [
       {
-        "relatedLot": "0b447ad702e64138b2c550dfe583c7f2", 
+        "relatedLot": "0e0d16f25ed5424a9dc07eeee9976392", 
         "value": {
-          "amount": 500
+          "contractDuration": {
+            "years": 7
+          }, 
+          "yearlyPaymentsPercentage": 0.9, 
+          "annualCostsReduction": [
+            700, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600, 
+            1600
+          ]
         }
+      }, 
+      {
+        "relatedLot": "49ec2b91790f4d9ca46623916636f04c", 
+        "value": {
+          "contractDuration": {
+            "years": 9
+          }, 
+          "yearlyPaymentsPercentage": 0.96, 
+          "annualCostsReduction": [
+            600, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200, 
+            1200
+          ]
+        }, 
+        "subcontractingDetails": "ДКП «Укр Прінт», Україна"
       }
     ]
   }
@@ -26,19 +85,19 @@ Content-Type: application/json; charset=UTF-8
     "selfEligible": true, 
     "lotValues": [
       {
-        "relatedLot": "0b447ad702e64138b2c550dfe583c7f2", 
-        "date": "2017-10-03T11:18:05.877920+03:00", 
+        "relatedLot": "0e0d16f25ed5424a9dc07eeee9976392", 
+        "date": "2017-10-06T17:05:15.419521+03:00", 
         "status": "pending", 
         "value": {
           "yearlyPaymentsPercentage": 0.9, 
           "valueAddedTaxIncluded": true, 
           "currency": "UAH", 
-          "amount": 10358.876712328767, 
+          "amount": 10370.71, 
           "contractDuration": {
             "days": 0, 
             "years": 7
           }, 
-          "amountPerformance": 2248.494981287916, 
+          "amountPerformance": 1684.39, 
           "annualCostsReduction": [
             700.0, 
             1600.0, 
@@ -63,6 +122,46 @@ Content-Type: application/json; charset=UTF-8
             1600.0
           ]
         }
+      }, 
+      {
+        "relatedLot": "49ec2b91790f4d9ca46623916636f04c", 
+        "date": "2017-10-06T17:05:15.421522+03:00", 
+        "status": "pending", 
+        "value": {
+          "yearlyPaymentsPercentage": 0.96, 
+          "valueAddedTaxIncluded": true, 
+          "currency": "UAH", 
+          "amount": 10672.57, 
+          "contractDuration": {
+            "days": 0, 
+            "years": 9
+          }, 
+          "amountPerformance": 705.17, 
+          "annualCostsReduction": [
+            600.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0, 
+            1200.0
+          ]
+        }, 
+        "subcontractingDetails": "ДКП «Укр Прінт», Україна"
       }
     ], 
     "selfQualified": true, 
@@ -88,8 +187,8 @@ Content-Type: application/json; charset=UTF-8
         }
       }
     ], 
-    "date": "2017-10-03T11:18:05.877346+03:00", 
-    "id": "abb1c9abb2e6488987c80753bcb459cb"
+    "date": "2017-10-06T17:05:15.419057+03:00", 
+    "id": "309506e3a03e4523b5272fedfb04ec3b"
   }
 }
 

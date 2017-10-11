@@ -7,21 +7,21 @@ DATA:
 {
   "data": {
     "fundingKind": "other", 
-    "description": "Опис Лот №1", 
+    "description": "Опис Лот №2", 
     "minimalStepPercentage": 0.006, 
-    "title": "Лот №1"
+    "title": "Лот №2"
   }
 }
 
 Response: 201 Created
 Content-Type: application/json; charset=UTF-8
-Location: http://api-sandbox.openprocurement.org/api/2.4/tenders/032ad48817a74526a52bbdc065449884/lots/0e0d16f25ed5424a9dc07eeee9976392
+Location: http://api-sandbox.openprocurement.org/api/2.4/tenders/032ad48817a74526a52bbdc065449884/lots/49ec2b91790f4d9ca46623916636f04c
 {
   "data": {
     "status": "active", 
-    "description": "Опис Лот №1", 
+    "description": "Опис Лот №2", 
     "fundingKind": "other", 
-    "title": "Лот №1", 
+    "title": "Лот №2", 
     "auctionPeriod": {
       "shouldStartAfter": "2017-12-11T17:04:36.741633+03:00"
     }, 
@@ -32,8 +32,8 @@ Location: http://api-sandbox.openprocurement.org/api/2.4/tenders/032ad48817a7452
     }, 
     "minimalStepPercentage": 0.006, 
     "yearlyPaymentsPercentageRange": 0.8, 
-    "date": "2017-10-06T17:05:14.764545+03:00", 
-    "id": "0e0d16f25ed5424a9dc07eeee9976392"
+    "date": "2017-10-06T17:05:14.829312+03:00", 
+    "id": "49ec2b91790f4d9ca46623916636f04c"
   }
 }
 
