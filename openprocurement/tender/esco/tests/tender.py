@@ -72,6 +72,7 @@ class TestTenderEU(BaseESCOContentWebTest, TenderResourceTestMixin, TenderUAReso
     initialize_initial_data = False
     initial_data = test_tender_data
     # for passing test from TenderUAResourceTestMixin
+    tender_period_days = {'first': 30, 'second': 7}
     initial_data['minValue'] = {"amount": 0}
     test_lots_data = test_lots
     test_bids_data = test_bids
