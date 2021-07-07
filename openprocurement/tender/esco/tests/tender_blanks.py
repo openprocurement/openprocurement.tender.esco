@@ -1310,3 +1310,18 @@ def create_tender_generated(self):
     self.assertNotEqual(data['id'], tender['id'])
     self.assertNotEqual(data['doc_id'], tender['id'])
     self.assertNotEqual(data['tenderID'], tender['tenderID'])
+
+def validate_items(self):
+    data = deepcopy(self.initial_data)
+    data["items"][0]["classification"]["id"] = u"92332000-7"
+    data["items"].append(deepcopy(data["items"][0]))
+    data["items"][1]["classification"]["id"] = u"92340000-6"
+    response = self.app.post_json("/tenders", {"data": data}, status=422)
+
+    self.assertEqual(response.status, '422 Unprocessable Entity')
+    self.assertEqual(response.content_type, 'application/json')
+    self.assertEqual(response.json['errors'], [
+        {u'description': [u'CPV class of items should be identical'],
+         u'location': u'body',
+         u'name': u'items'}
+])

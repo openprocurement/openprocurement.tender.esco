@@ -39,6 +39,7 @@ from openprocurement.tender.esco.tests.tender_blanks import (
     tender_fundingKind_default,
     items_without_deliveryDate_quantity,
     tender_noticePublicationDate,
+    validate_items,
     # TestTenderEU
     create_tender_invalid,
     patch_tender,
@@ -65,6 +66,7 @@ class TenderESCOTest(BaseESCOWebTest):
     test_items_without_deliveryDate_quantity = snitch(items_without_deliveryDate_quantity)
     test_tender_fundingKind_default = snitch(tender_fundingKind_default)
     test_tender_noticePublicationDate = snitch(tender_noticePublicationDate)
+    test_validate_items = snitch(validate_items)
 
 
 class TestTenderEU(BaseESCOContentWebTest, TenderResourceTestMixin, TenderUAResourceTestMixin):
